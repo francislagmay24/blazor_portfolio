@@ -38,7 +38,7 @@ public sealed class CallToAction
 
 public sealed class AboutInfo
 {
-    public string Heading { get; set; } = "About me";
+    public string Heading { get; set; } = "About Me";
     public List<string> Paragraphs { get; set; } = [];
     public string AvatarPath { get; set; } = "images/portfolio/avatar-placeholder.svg";
     public string ResumePath { get; set; } = "files/resume.pdf";

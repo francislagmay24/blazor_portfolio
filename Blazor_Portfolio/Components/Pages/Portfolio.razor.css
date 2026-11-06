@@ -272,6 +272,17 @@
     gap: 1.25rem;
 }
 
+/* With an odd card count (e.g. five cards in three columns) the trailing row
+   would leave a hole on the right. Start that row one track in so the
+   remainder is centred, keeping every card the same width. Scoped to widths
+   that actually produce three columns — otherwise grid-column:2 would create
+   a second column on its own. */
+@media (min-width: 860px) {
+    .skill-card:nth-child(3n + 1):nth-last-child(2) {
+        grid-column: 1;
+    }
+}
+
 .skill-card {
     background: var(--surface);
     border: 1px solid var(--line);

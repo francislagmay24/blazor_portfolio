@@ -1,11 +1,11 @@
 {
   "Portfolio": {
     "Profile": {
-      "Name": "Your Name",
-      "Title": "Full-Stack Engineer",
-      "ValueProposition": "I build web applications that stay fast and readable as they grow — from the MySQL schema up to the last pixel of the interface.",
+      "Name": "Francis Lagmay",
+      "Title": "Full-Stack Developer",
+      "ValueProposition": "I build Web Applications that stay fast and readable as they grow — from the MySQL schema up to the last pixel of the interface.",
       "Location": "Manila, Philippines",
-      "AvailabilityNote": "Open to full-time roles and select freelance work.",
+      "AvailabilityNote": "Open to Full-Time Roles and select Freelance Work.",
       "CallsToAction": [
         { "Label": "View Projects", "Href": "#projects", "Style": "primary" },
         { "Label": "Get in Touch", "Href": "#contact", "Style": "secondary" }
@@ -13,18 +13,17 @@
     },
 
     "About": {
-      "Heading": "About me",
+      "Heading": "About Me",
       "Paragraphs": [
-        "I'm a full-stack developer with a focus on .NET and modern JavaScript. I started out maintaining an internal inventory system, which taught me more about schema design and error handling than any tutorial — mainly because I broke it a few times first.",
-        "My coding philosophy is boring on purpose: name things clearly, keep side effects where a reader expects them, and write the test that reproduces the bug before fixing it. I'd rather ship something a teammate can change at 2am than something clever nobody can read.",
-        "What drives me is the gap between a working prototype and a system people actually trust. I like the unglamorous part — the loading states, the validation messages, the indexes that make a slow page feel instant."
+        "I'm a Full-Stack Developer with 5+ years of experience designing and delivering enterprise-grade applications in the financial and education sectors.",
+        "Experienced in leading development initiatives, mentoring junior developers, and building scalable solutions using C#, .NET, Blazor, Vue.js, SQL Server, REST APIs, and GraphQL."
       ],
       "AvatarPath": "images/portfolio/avatar-placeholder.svg",
       "ResumePath": "files/resume.pdf",
-      "ResumeLabel": "Download résumé (PDF)",
+      "ResumeLabel": "Download Resume (PDF)",
       "Facts": [
         { "Label": "Focus", "Value": "ASP.NET Core · Blazor · EF Core" },
-        { "Label": "Experience", "Value": "4 years professional" },
+        { "Label": "Experience", "Value": "6 years professional" },
         { "Label": "Location", "Value": "Manila, PH (UTC+8)" },
         { "Label": "Languages", "Value": "English, Filipino" }
       ]
@@ -34,38 +33,44 @@
       {
         "Category": "Languages",
         "Items": [
-          { "Name": "C#", "Level": 5, "Years": "4 yrs" },
-          { "Name": "SQL", "Level": 4, "Years": "4 yrs" },
-          { "Name": "TypeScript", "Level": 4, "Years": "3 yrs" },
-          { "Name": "JavaScript", "Level": 4, "Years": "4 yrs" },
-          { "Name": "HTML / CSS", "Level": 5, "Years": "5 yrs" }
+          { "Name": "C#", "Level": 4, "Years": "6 yrs" },
+          { "Name": "SQL", "Level": 4, "Years": "6 yrs" },
+          { "Name": "JavaScript", "Level": 4, "Years": "6 yrs" },
+          { "Name": "HTML / CSS", "Level": 5, "Years": "6 yrs" }
         ]
       },
       {
         "Category": "Frameworks & Libraries",
         "Items": [
-          { "Name": "ASP.NET Core", "Level": 5, "Years": "4 yrs" },
-          { "Name": "Blazor", "Level": 4, "Years": "2 yrs" },
-          { "Name": "Entity Framework Core", "Level": 4, "Years": "4 yrs" },
-          { "Name": "React", "Level": 3, "Years": "2 yrs" }
+          { "Name": "ASP.NET Core", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Blazor", "Level": 5, "Years": "5 yrs" },
+          { "Name": "Entity Framework Core", "Level": 3, "Years": "4 yrs" },
+          { "Name": "VueJS", "Level": 4, "Years": "3 yrs" },
+          { "Name": "jQuery", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Tailwind CSS", "Level": 4, "Years": "2 yrs" }
+        ]
+      },
+      {
+        "Category": "APIs & Integration",
+        "Items": [
+          { "Name": "REST API design", "Level": 4, "Years": "6 yrs" },
+          { "Name": "GraphQL (HotChocolate)", "Level": 4, "Years": "4 yrs" },
+          { "Name": "SignalR / WebSockets", "Level": 3, "Years": "3 yrs" }
         ]
       },
       {
         "Category": "Data & Infrastructure",
         "Items": [
-          { "Name": "MySQL / MariaDB", "Level": 4, "Years": "4 yrs" },
-          { "Name": "Redis", "Level": 3, "Years": "2 yrs" },
-          { "Name": "Docker", "Level": 3, "Years": "2 yrs" },
-          { "Name": "Azure App Service", "Level": 3, "Years": "2 yrs" }
+          { "Name": "MySQL", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Redis", "Level": 2, "Years": "1 yrs" },
+          { "Name": "Query Optimization", "Level": 4, "Years": "3 yrs" }
         ]
       },
       {
         "Category": "Tools & Practices",
         "Items": [
-          { "Name": "Git / GitHub", "Level": 4, "Years": "5 yrs" },
-          { "Name": "xUnit", "Level": 4, "Years": "3 yrs" },
-          { "Name": "GitHub Actions", "Level": 3, "Years": "2 yrs" },
-          { "Name": "Figma", "Level": 3, "Years": "2 yrs" }
+          { "Name": "Git / GitHub", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Figma", "Level": 3, "Years": "5 yrs" }
         ]
       }
     ],
@@ -181,9 +186,8 @@
       },
       {
         "Kind": "Award",
-        "Title": "2nd place — regional hackathon",
-        "Detail": "48-hour build of a public-transport routing assistant. I owned the API and the transit-graph model.",
-        "Attribution": "12 teams",
+        "Title": "Employee of the Month",
+        "Detail": "Awarded Employee of the Month 6 times in recognition of consistent technical delivery, project leadership, and development excellence.",
         "Date": "2023"
       }
     ],
@@ -191,14 +195,13 @@
     "Contact": {
       "Heading": "Get in touch",
       "Blurb": "The fastest way to reach me is email. If you have a project, a role, or a question, the form below lands in the same inbox.",
-      "Email": "you@example.com",
+      "Email": "francislagmay24@gmail.com",
       "FormHeading": "Send a message"
     },
 
     "Socials": [
-      { "Label": "GitHub", "Url": "https://github.com/your-handle", "Mark": "GH" },
-      { "Label": "LinkedIn", "Url": "https://www.linkedin.com/in/your-handle", "Mark": "in" },
-      { "Label": "Twitter / X", "Url": "https://x.com/your-handle", "Mark": "X" }
+      { "Label": "GitHub", "Url": "https://github.com/francislagmay24", "Mark": "GH" },
+      { "Label": "LinkedIn", "Url": "https://www.linkedin.com/in/francislagmay/", "Mark": "in" }
     ]
   }
 }

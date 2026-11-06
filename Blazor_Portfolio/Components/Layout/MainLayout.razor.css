@@ -76,23 +76,10 @@ main {
     }
 }
 
-#blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+/* ---------- Blazor error banner ----------
+   Hidden by default; blazor.web.js switches it to display:block if a circuit
+   fails. This MUST be global (see wwwroot/app.css), because three different
+   layouts (MainLayout, LandingLayout, AuthLayout) each render their own
+   #blazor-error-ui div. A rule scoped here would only ever match MainLayout,
+   leaving the banner permanently visible on the portfolio and login pages.
+   Do not re-add it in a .razor.css file. */
