@@ -1,0 +1,396 @@
+@page "/"
+@layout Layout.LandingLayout
+@attribute [AllowAnonymous]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Options
+@using Blazor_Portfolio.Options
+@using Blazor_Portfolio.Security
+@using Blazor_Portfolio.Services
+@inject IOptions<PortfolioOptions> PortfolioOptions
+@inject ContactService ContactService
+
+<PageTitle>@portfolio.Profile.Name — @portfolio.Profile.Title</PageTitle>
+<HeadContent>
+    <meta name="description" content="@portfolio.Profile.ValueProposition" />
+</HeadContent>
+
+@* ================= HERO ================= *@
+<section class="hero" id="top">
+    <div class="landing-container hero-inner">
+        <div class="hero-copy">
+            @if (!string.IsNullOrWhiteSpace(portfolio.Profile.AvailabilityNote))
+            {
+                <p class="hero-badge">
+                    <span class="hero-dot" aria-hidden="true"></span>
+                    @portfolio.Profile.AvailabilityNote
+                </p>
+            }
+
+            <h1 class="hero-name">@portfolio.Profile.Name</h1>
+            <p class="hero-title">@portfolio.Profile.Title</p>
+            <p class="hero-value">@portfolio.Profile.ValueProposition</p>
+
+            <div class="hero-actions">
+                @foreach (var cta in portfolio.Profile.CallsToAction)
+                {
+                    <a class="btn-landing @(cta.Style == "secondary" ? "btn-landing-secondary" : "btn-landing-primary")"
+                       href="@cta.Href">@cta.Label</a>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(portfolio.Profile.Location))
+            {
+                <p class="hero-location">@portfolio.Profile.Location</p>
+            }
+        </div>
+
+        <div class="hero-card" aria-hidden="true">
+            <div class="hero-card-bar"><span></span><span></span><span></span></div>
+            <pre class="hero-code"><code>public class Engineer
+{
+    public string Name => "@portfolio.Profile.Name";
+    public string Role => "@portfolio.Profile.Title";
+
+    public IEnumerable&lt;string&gt; Values =>
+    [
+        "Readable over clever",
+        "Tests before fixes",
+        "Ship, then measure"
+    ];
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+@* ================= ABOUT ================= *@
+<section class="section" id="about">
+    <div class="landing-container">
+        <h2 class="section-title">@portfolio.About.Heading</h2>
+
+        <div class="about-grid">
+            <figure class="about-figure">
+                @* TODO: replace with a real headshot (see wwwroot/images/portfolio). *@
+                <img class="about-avatar" src="@portfolio.About.AvatarPath"
+                     alt="Portrait of @portfolio.Profile.Name" width="400" height="400" />
+                <figcaption class="about-caption">@portfolio.Profile.Title</figcaption>
+            </figure>
+
+            <div class="about-body">
+                @foreach (var paragraph in portfolio.About.Paragraphs)
+                {
+                    <p>@paragraph</p>
+                }
+
+                @if (portfolio.About.Facts.Count > 0)
+                {
+                    <dl class="about-facts">
+                        @foreach (var fact in portfolio.About.Facts)
+                        {
+                            <div class="about-fact">
+                                <dt>@fact.Label</dt>
+                                <dd>@fact.Value</dd>
+                            </div>
+                        }
+                    </dl>
+                }
+
+                <a class="btn-landing btn-landing-secondary about-resume"
+                   href="@portfolio.About.ResumePath" download>@portfolio.About.ResumeLabel</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ================= SKILLS ================= *@
+<section class="section section-alt" id="skills">
+    <div class="landing-container">
+        <h2 class="section-title">Skills &amp; tech stack</h2>
+        <p class="section-lede">
+            Only what I've actually shipped with. The meter is an honest self-assessment, not a certification.
+        </p>
+
+        <div class="skills-grid">
+            @foreach (var group in portfolio.Skills)
+            {
+                <div class="skill-card">
+                    <h3 class="skill-card-title">@group.Category</h3>
+                    <ul class="skill-list">
+                        @foreach (var skill in group.Items)
+                        {
+                            <li class="skill-item">
+                                <div class="skill-head">
+                                    <span class="skill-name">@skill.Name</span>
+                                    @if (!string.IsNullOrWhiteSpace(skill.Years))
+                                    {
+                                        <span class="skill-years">@skill.Years</span>
+                                    }
+                                </div>
+                                <div class="skill-meter" role="img"
+                                     aria-label="@skill.Name: @skill.Level out of 5">
+                                    @for (var i = 1; i <= 5; i++)
+                                    {
+                                        <span class="skill-pip @(i <= skill.Level ? "is-on" : null)"></span>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@* ================= PROJECTS ================= *@
+<section class="section" id="projects">
+    <div class="landing-container">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-lede">
+            Six builds that went to real users. Each one lists the problem that made it hard, not just the stack.
+        </p>
+
+        <div class="projects-grid">
+            @foreach (var project in portfolio.Projects)
+            {
+                <article class="project-card @(project.Featured ? "is-featured" : null)">
+                    <a class="project-media" href="@(project.DemoUrl ?? project.RepoUrl ?? "#")">
+                        @* TODO: replace with a real screenshot of the project. *@
+                        <img src="@project.ImagePath"
+                             alt="@(project.ImageAlt ?? $"{project.Title} preview")" loading="lazy" />
+                    </a>
+
+                    <div class="project-body">
+                        <div class="project-head">
+                            <h3 class="project-title">@project.Title</h3>
+                            @if (!string.IsNullOrWhiteSpace(project.Period))
+                            {
+                                <span class="project-period">@project.Period</span>
+                            }
+                        </div>
+
+                        <p class="project-summary">@project.Summary</p>
+
+                        @if (project.Challenges.Count > 0)
+                        {
+                            <h4 class="project-label">What was hard</h4>
+                            <ul class="project-challenges">
+                                @foreach (var challenge in project.Challenges)
+                                {
+                                    <li>@challenge</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (project.Tech.Count > 0)
+                        {
+                            <ul class="project-tech">
+                                @foreach (var tech in project.Tech)
+                                {
+                                    <li>@tech</li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="project-links">
+                            @if (!string.IsNullOrWhiteSpace(project.DemoUrl))
+                            {
+                                <a class="project-link" href="@project.DemoUrl" target="_blank" rel="noopener">
+                                    Live demo <span aria-hidden="true">↗</span>
+                                </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(project.RepoUrl))
+                            {
+                                <a class="project-link" href="@project.RepoUrl" target="_blank" rel="noopener">
+                                    Source <span aria-hidden="true">↗</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+@* ================= SOCIAL PROOF ================= *@
+@if (portfolio.SocialProof.Count > 0)
+{
+    <section class="section section-alt" id="proof">
+        <div class="landing-container">
+            <h2 class="section-title">Social proof</h2>
+            <p class="section-lede">Testimonials, certifications and communities that keep me honest.</p>
+
+            <div class="proof-grid">
+                @foreach (var item in portfolio.SocialProof)
+                {
+                    <figure class="proof-card">
+                        <div class="proof-kind">@item.Kind</div>
+                        <blockquote class="proof-title">@item.Title</blockquote>
+                        <p class="proof-detail">@item.Detail</p>
+                        <figcaption class="proof-meta">
+                            @if (!string.IsNullOrWhiteSpace(item.Attribution))
+                            {
+                                <span>@item.Attribution</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(item.Date))
+                            {
+                                <span class="proof-date">@item.Date</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(item.Url))
+                            {
+                                <a href="@item.Url" target="_blank" rel="noopener">Link ↗</a>
+                            }
+                        </figcaption>
+                    </figure>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@* ================= CONTACT ================= *@
+<section class="section" id="contact">
+    <div class="landing-container">
+        <h2 class="section-title">@portfolio.Contact.Heading</h2>
+        <p class="section-lede">@portfolio.Contact.Blurb</p>
+
+        <div class="contact-grid">
+            <div class="contact-details">
+                <a class="contact-email" href="mailto:@portfolio.Contact.Email">@portfolio.Contact.Email</a>
+
+                <ul class="contact-socials">
+                    @foreach (var social in portfolio.Socials)
+                    {
+                        <li>
+                            <a href="@social.Url" target="_blank" rel="noopener">
+                                <span class="contact-mark" aria-hidden="true">@social.Mark</span>
+                                @social.Label
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="contact-form-panel">
+                <h3 class="contact-form-title">@portfolio.Contact.FormHeading</h3>
+
+                @if (contactState == ContactState.Sent)
+                {
+                    <div class="form-success" role="status">
+                        <strong>Thanks — your message is in.</strong>
+                        I'll reply to the address you left, usually within two working days.
+                    </div>
+                    <button class="btn-landing btn-landing-secondary" @onclick="ResetForm">Send another message</button>
+                }
+                else
+                {
+                    @if (!string.IsNullOrEmpty(contactError))
+                    {
+                        <div class="alert alert-danger" role="alert">@contactError</div>
+                    }
+
+                    <EditForm Model="ContactInput" FormName="contact" OnValidSubmit="HandleContactAsync" method="post">
+                        <DataAnnotationsValidator />
+
+                        <div class="contact-row">
+                            <div class="contact-field">
+                                <label for="contact-name">Name</label>
+                                <InputText id="contact-name" class="form-control" autocomplete="name"
+                                           @bind-Value="ContactInput.Name" />
+                                <ValidationMessage For="() => ContactInput.Name" class="validation-message" />
+                            </div>
+
+                            <div class="contact-field">
+                                <label for="contact-email">Email</label>
+                                <InputText id="contact-email" class="form-control" type="email"
+                                           autocomplete="email" @bind-Value="ContactInput.Email" />
+                                <ValidationMessage For="() => ContactInput.Email" class="validation-message" />
+                            </div>
+                        </div>
+
+                        <div class="contact-field">
+                            <label for="contact-company">Company <span class="optional">(optional)</span></label>
+                            <InputText id="contact-company" class="form-control" autocomplete="organization"
+                                       @bind-Value="ContactInput.Company" />
+                            <ValidationMessage For="() => ContactInput.Company" class="validation-message" />
+                        </div>
+
+                        <div class="contact-field">
+                            <label for="contact-message">Message</label>
+                            <InputTextArea id="contact-message" class="form-control" rows="5"
+                                           @bind-Value="ContactInput.Message" />
+                            <ValidationMessage For="() => ContactInput.Message" class="validation-message" />
+                        </div>
+
+                        @* Honeypot: hidden from people, irresistible to bots. *@
+                        <div class="contact-honeypot" aria-hidden="true">
+                            <label for="contact-website">Website</label>
+                            <InputText id="contact-website" @bind-Value="ContactInput.Website" tabindex="-1"
+                                       autocomplete="off" />
+                        </div>
+
+                        <button type="submit" class="btn-landing btn-landing-primary contact-submit"
+                                disabled="@(contactState == ContactState.Sending)">
+                            @(contactState == ContactState.Sending ? "Sending…" : "Send message")
+                        </button>
+                    </EditForm>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private PortfolioOptions portfolio = new();
+    private string? contactError;
+    private ContactState contactState = ContactState.Idle;
+
+    private enum ContactState { Idle, Sending, Sent }
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromForm(FormName = "contact")]
+    private ContactInput ContactInput { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        portfolio = PortfolioOptions.Value;
+
+        // Don't replay a previous post's values on a plain GET.
+        if (HttpContext?.Request.Method != HttpMethods.Post)
+        {
+            ContactInput = new ContactInput();
+        }
+    }
+
+    private async Task HandleContactAsync()
+    {
+        contactState = ContactState.Sending;
+        contactError = null;
+
+        var result = await ContactService.SaveAsync(ContactInput, HttpContext?.Connection.RemoteIpAddress?.ToString());
+
+        switch (result)
+        {
+            // A honeypot hit is reported as success so bots get no signal.
+            case ContactResult.Saved:
+            case ContactResult.Discarded:
+                contactState = ContactState.Sent;
+                break;
+
+            default:
+                contactState = ContactState.Idle;
+                contactError = "Sorry — the message could not be saved right now. " +
+                               "Please email me directly at " + portfolio.Contact.Email + ".";
+                break;
+        }
+    }
+
+    private void ResetForm()
+    {
+        ContactInput = new ContactInput();
+        contactState = ContactState.Idle;
+        contactError = null;
+    }
+}

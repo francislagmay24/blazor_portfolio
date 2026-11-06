@@ -1,0 +1,204 @@
+{
+  "Portfolio": {
+    "Profile": {
+      "Name": "Your Name",
+      "Title": "Full-Stack Engineer",
+      "ValueProposition": "I build web applications that stay fast and readable as they grow — from the MySQL schema up to the last pixel of the interface.",
+      "Location": "Manila, Philippines",
+      "AvailabilityNote": "Open to full-time roles and select freelance work.",
+      "CallsToAction": [
+        { "Label": "View Projects", "Href": "#projects", "Style": "primary" },
+        { "Label": "Get in Touch", "Href": "#contact", "Style": "secondary" }
+      ]
+    },
+
+    "About": {
+      "Heading": "About me",
+      "Paragraphs": [
+        "I'm a full-stack developer with a focus on .NET and modern JavaScript. I started out maintaining an internal inventory system, which taught me more about schema design and error handling than any tutorial — mainly because I broke it a few times first.",
+        "My coding philosophy is boring on purpose: name things clearly, keep side effects where a reader expects them, and write the test that reproduces the bug before fixing it. I'd rather ship something a teammate can change at 2am than something clever nobody can read.",
+        "What drives me is the gap between a working prototype and a system people actually trust. I like the unglamorous part — the loading states, the validation messages, the indexes that make a slow page feel instant."
+      ],
+      "AvatarPath": "images/portfolio/avatar-placeholder.svg",
+      "ResumePath": "files/resume.pdf",
+      "ResumeLabel": "Download résumé (PDF)",
+      "Facts": [
+        { "Label": "Focus", "Value": "ASP.NET Core · Blazor · EF Core" },
+        { "Label": "Experience", "Value": "4 years professional" },
+        { "Label": "Location", "Value": "Manila, PH (UTC+8)" },
+        { "Label": "Languages", "Value": "English, Filipino" }
+      ]
+    },
+
+    "Skills": [
+      {
+        "Category": "Languages",
+        "Items": [
+          { "Name": "C#", "Level": 5, "Years": "4 yrs" },
+          { "Name": "SQL", "Level": 4, "Years": "4 yrs" },
+          { "Name": "TypeScript", "Level": 4, "Years": "3 yrs" },
+          { "Name": "JavaScript", "Level": 4, "Years": "4 yrs" },
+          { "Name": "HTML / CSS", "Level": 5, "Years": "5 yrs" }
+        ]
+      },
+      {
+        "Category": "Frameworks & Libraries",
+        "Items": [
+          { "Name": "ASP.NET Core", "Level": 5, "Years": "4 yrs" },
+          { "Name": "Blazor", "Level": 4, "Years": "2 yrs" },
+          { "Name": "Entity Framework Core", "Level": 4, "Years": "4 yrs" },
+          { "Name": "React", "Level": 3, "Years": "2 yrs" }
+        ]
+      },
+      {
+        "Category": "Data & Infrastructure",
+        "Items": [
+          { "Name": "MySQL / MariaDB", "Level": 4, "Years": "4 yrs" },
+          { "Name": "Redis", "Level": 3, "Years": "2 yrs" },
+          { "Name": "Docker", "Level": 3, "Years": "2 yrs" },
+          { "Name": "Azure App Service", "Level": 3, "Years": "2 yrs" }
+        ]
+      },
+      {
+        "Category": "Tools & Practices",
+        "Items": [
+          { "Name": "Git / GitHub", "Level": 4, "Years": "5 yrs" },
+          { "Name": "xUnit", "Level": 4, "Years": "3 yrs" },
+          { "Name": "GitHub Actions", "Level": 3, "Years": "2 yrs" },
+          { "Name": "Figma", "Level": 3, "Years": "2 yrs" }
+        ]
+      }
+    ],
+
+    "Projects": [
+      {
+        "Title": "Client portal with white-label theming",
+        "Summary": "A multi-tenant portal serving 11 client brands from one deployment. Each tenant supplies its own logo, palette and copy through configuration rather than a code branch.",
+        "Challenges": [
+          "Replaced an app-per-client deployment with a single build where branding is entirely configuration-driven, cutting release work from a day to minutes.",
+          "Kept tenant assets isolated — a bad logo path degrades to a text mark instead of a broken layout.",
+          "Moved document generation off the request thread so 200-page reports no longer time out."
+        ],
+        "Tech": ["ASP.NET Core", "Blazor", "EF Core", "MySQL", "Azure"],
+        "ImagePath": "images/portfolio/project-1.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2025 — present",
+        "Featured": true
+      },
+      {
+        "Title": "Inventory reconciliation service",
+        "Summary": "Background service reconciling warehouse stock counts against sales and purchase records, flagging discrepancies for review instead of silently overwriting them.",
+        "Challenges": [
+          "Made the reconciliation idempotent so a restart mid-run cannot double-adjust stock.",
+          "Tuned the diff query from 90 seconds to under 2 with a covering index and a set-based merge.",
+          "Built an audit trail that answers 'why did this count change' months later."
+        ],
+        "Tech": ["C#", "EF Core", "MySQL", "Quartz.NET"],
+        "ImagePath": "images/portfolio/project-2.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2024 — 2025"
+      },
+      {
+        "Title": "CSV import pipeline for messy spreadsheets",
+        "Summary": "Self-service import tool letting operations staff load supplier spreadsheets with inconsistent headers, encodings and date formats — without a developer present.",
+        "Challenges": [
+          "Column mapping learned from the header row, so renamed columns do not break the import.",
+          "Row-level validation reports every problem at once rather than failing on the first.",
+          "Streamed the parse so a 400k-row file uses flat memory."
+        ],
+        "Tech": ["C#", "Blazor", "CsvHelper", "MySQL"],
+        "ImagePath": "images/portfolio/project-3.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2024"
+      },
+      {
+        "Title": "Real-time ops dashboard",
+        "Summary": "Live floor dashboard showing machine status and queue depth, replacing a whiteboard plus a spreadsheet refreshed every shift.",
+        "Challenges": [
+          "Pushed updates over SignalR with automatic reconnect so a dropped tablet reconnects without a reload.",
+          "Collapsed per-machine event streams into 1-second aggregates to keep payloads small.",
+          "Designed for a 1024×600 kiosk screen readable from three metres away."
+        ],
+        "Tech": ["ASP.NET Core", "SignalR", "TypeScript", "MySQL"],
+        "ImagePath": "images/portfolio/project-4.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2023 — 2024"
+      },
+      {
+        "Title": "Open-source: MySQL index analyzer",
+        "Summary": "A small CLI that reads EF Core's generated SQL and suggests the indexes a MySQL schema is missing. Used by my own team on three production systems.",
+        "Challenges": [
+          "Parsed the query tree just far enough to find predicate columns without reimplementing a SQL parser.",
+          "Kept suggestions conservative — it proposes, it never applies DDL."
+        ],
+        "Tech": ["C#", ".NET CLI", "MySQL"],
+        "ImagePath": "images/portfolio/project-5.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2023"
+      },
+      {
+        "Title": "Booking flow revamp",
+        "Summary": "Rebuilt a four-step booking journey that had a 38% abandonment at step two, reducing it to two steps with inline validation.",
+        "Challenges": [
+          "Instrumented each step to find the real drop-off instead of guessing from complaints.",
+          "Preserved in-progress bookings across sessions so a closed tab was not a lost booking.",
+          "Cut abandonment at the previously worst step from 38% to 11%."
+        ],
+        "Tech": ["Blazor", "ASP.NET Core", "MySQL", "Application Insights"],
+        "ImagePath": "images/portfolio/project-6.svg",
+        "DemoUrl": "#",
+        "RepoUrl": "#",
+        "Period": "2022 — 2023"
+      }
+    ],
+
+    "SocialProof": [
+      {
+        "Kind": "Testimonial",
+        "Title": "Reliable under deadline",
+        "Detail": "He took over a handoff with almost no documentation and had the reconciliation service in production in three weeks. The audit trail he added is the reason we could pass our external review.",
+        "Attribution": "Engineering Manager, logistics client",
+        "Date": "2025"
+      },
+      {
+        "Kind": "Certification",
+        "Title": "Microsoft Certified: Azure Developer Associate (AZ-204)",
+        "Detail": "Covers building, testing and deploying Azure-hosted applications, including auth and storage integration.",
+        "Attribution": "Microsoft",
+        "Date": "2024"
+      },
+      {
+        "Kind": "Open source",
+        "Title": "Contributor to MySqlConnector",
+        "Detail": "Documentation fixes and a connection-string parsing edge case around escaped characters in passwords.",
+        "Url": "#",
+        "Date": "2024"
+      },
+      {
+        "Kind": "Award",
+        "Title": "2nd place — regional hackathon",
+        "Detail": "48-hour build of a public-transport routing assistant. I owned the API and the transit-graph model.",
+        "Attribution": "12 teams",
+        "Date": "2023"
+      }
+    ],
+
+    "Contact": {
+      "Heading": "Get in touch",
+      "Blurb": "The fastest way to reach me is email. If you have a project, a role, or a question, the form below lands in the same inbox.",
+      "Email": "you@example.com",
+      "FormHeading": "Send a message"
+    },
+
+    "Socials": [
+      { "Label": "GitHub", "Url": "https://github.com/your-handle", "Mark": "GH" },
+      { "Label": "LinkedIn", "Url": "https://www.linkedin.com/in/your-handle", "Mark": "in" },
+      { "Label": "Twitter / X", "Url": "https://x.com/your-handle", "Mark": "X" }
+    ]
+  }
+}

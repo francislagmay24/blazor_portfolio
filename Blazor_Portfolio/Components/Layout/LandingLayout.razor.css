@@ -1,0 +1,141 @@
+/* ---------------------------------------------------------------------------
+   Landing layout shell: design tokens, sticky header and footer.
+   These selectors must live in the layout's own stylesheet so the scoped-CSS
+   attribute matches the elements this component actually renders.
+
+   The tokens cascade by inheritance, so page components nested inside
+   <div class="landing"> can use var(--ink) etc. freely.
+   --------------------------------------------------------------------------- */
+.landing {
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-faint: #64748b;
+    --line: #e2e8f0;
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --accent: #1b6ec2;
+    --accent-dark: #123a6b;
+    --radius: 14px;
+
+    color: var(--ink);
+    background: var(--surface);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+}
+
+/* ---------- Header ---------- */
+.landing-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+}
+
+.landing-header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 4rem;
+}
+
+.landing-brand {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.landing-nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-left: auto;
+}
+
+.landing-nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding-bottom: 0.15rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.landing-nav a:hover,
+.landing-nav a:focus {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.landing-signin {
+    padding: 0.45rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.landing-signin:hover,
+.landing-signin:focus {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ---------- Footer ---------- */
+.landing-footer {
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--line);
+    background: var(--surface-alt);
+}
+
+.landing-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.landing-footer-text {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+}
+
+.landing-footer-links {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.landing-footer-links a {
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+}
+
+.landing-footer-links a:hover,
+.landing-footer-links a:focus {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* ---------- Responsive shell ---------- */
+@media (max-width: 720px) {
+    .landing-nav {
+        display: none;
+    }
+
+    .landing-signin {
+        margin-left: auto;
+    }
+
+    .landing-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

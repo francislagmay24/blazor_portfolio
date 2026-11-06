@@ -1,0 +1,12 @@
+YOUR RÉSUMÉ GOES HERE
+=====================
+
+This is a placeholder so the "Download résumé" link on the portfolio
+page resolves instead of returning 404.
+
+To replace it:
+  1. Export your CV as PDF.
+  2. Save it as  wwwroot/files/resume.pdf  (overwrite this file).
+  3. Optionally change About:ResumePath / About:ResumeLabel in portfolio.json.
+
+The same content is also provided as resume.txt for editing convenience.
