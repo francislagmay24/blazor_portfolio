@@ -1,0 +1,156 @@
+{
+  "Portfolio": {
+    "Profile": {
+      "Name": "Francis Lagmay",
+      "Title": "Full-Stack Developer",
+      "ValueProposition": "I build Web Applications that stay fast and readable as they grow — from the MySQL schema up to the last pixel of the interface.",
+      "Location": "Manila, Philippines",
+      "AvailabilityNote": "Open to Full-Time Roles and select Freelance Work.",
+      "CallsToAction": [
+        { "Label": "View Projects", "Href": "#projects", "Style": "primary" },
+        { "Label": "Get in Touch", "Href": "#contact", "Style": "secondary" }
+      ]
+    },
+
+    "About": {
+      "Heading": "About Me",
+      "Paragraphs": [
+        "I'm a Full-Stack Developer with 5+ years of experience designing and delivering enterprise-grade applications in the financial and education sectors.",
+        "Experienced in leading development initiatives, mentoring junior developers, and building scalable solutions using C#, .NET, Blazor, Vue.js, SQL Server, REST APIs, and GraphQL."
+      ],
+      "AvatarPath": "images/portfolio/avatar-placeholder.svg",
+      "ResumePath": "files/resume.pdf",
+      "ResumeLabel": "Download Resume (PDF)",
+      "Facts": [
+        { "Label": "Focus", "Value": "ASP.NET Core · Blazor · EF Core" },
+        { "Label": "Experience", "Value": "6 years professional" },
+        { "Label": "Location", "Value": "Manila, PH (UTC+8)" },
+        { "Label": "Languages", "Value": "English, Filipino" }
+      ]
+    },
+
+    "Skills": [
+      {
+        "Category": "Languages",
+        "Items": [
+          { "Name": "C#", "Level": 4, "Years": "6 yrs" },
+          { "Name": "SQL", "Level": 4, "Years": "6 yrs" },
+          { "Name": "JavaScript", "Level": 4, "Years": "6 yrs" },
+          { "Name": "HTML / CSS", "Level": 5, "Years": "6 yrs" }
+        ]
+      },
+      {
+        "Category": "Frameworks & Libraries",
+        "Items": [
+          { "Name": "ASP.NET Core", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Blazor", "Level": 5, "Years": "5 yrs" },
+          { "Name": "Entity Framework Core", "Level": 3, "Years": "4 yrs" },
+          { "Name": "VueJS", "Level": 4, "Years": "3 yrs" },
+          { "Name": "jQuery", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Tailwind CSS", "Level": 4, "Years": "2 yrs" }
+        ]
+      },
+      {
+        "Category": "APIs & Integration",
+        "Items": [
+          { "Name": "REST API design", "Level": 4, "Years": "6 yrs" },
+          { "Name": "GraphQL (HotChocolate)", "Level": 4, "Years": "4 yrs" },
+          { "Name": "SignalR / WebSockets", "Level": 3, "Years": "3 yrs" }
+        ]
+      },
+      {
+        "Category": "Data & Infrastructure",
+        "Items": [
+          { "Name": "MySQL", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Redis", "Level": 2, "Years": "1 yrs" },
+          { "Name": "Query Optimization", "Level": 4, "Years": "3 yrs" }
+        ]
+      },
+      {
+        "Category": "Tools & Practices",
+        "Items": [
+          { "Name": "Git / GitHub", "Level": 4, "Years": "6 yrs" },
+          { "Name": "Figma", "Level": 3, "Years": "5 yrs" }
+        ]
+      }
+    ],
+
+    "Projects": [
+      {
+        "Title": "Blazor Portfolio",
+        "Summary": "A modern, responsive developer portfolio featuring a hero section with a clear call-to-action, a showcase of 6 working projects with tech stacks, a scannable skills grid, a personal bio, and contact details with social links and a downloadable resume.",
+        "Tech": [ "Blazor", "HTML & CSS", "jQuery", "C#", "ASP.NET Core", "MySQL" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2026"
+      },
+      {
+        "Title": "Student Management System",
+        "Summary": "A comprehensive system designed to help educational institutions manage student enrolments, courses, assessments, financials, and compliance processes.",
+        "Tech": [ "HTML & CSS", "jQuery", "C#", "ASP.NET Core", "MySQL" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2025 — 2026"
+      },
+      {
+        "Title": "PSEConnect",
+        "Summary": "An Enterprise trading platform enabling brokers to participate in Philippine Stock Exchange transactions and market activities.",
+        "Tech": [ "HTML & CSS", "jQuery", "Blazor", "Entity Framework Core", "MySQL", "GraphQL", "RestAPI" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2020-2025"
+      },
+      {
+        "Title": "PDS Market Page",
+        "Summary": "An Enterprise monitoring platform providing visibility into fixed-income market infrastructure and trading activities. ",
+        "Tech": [ "HTML", "VueJS", "Tailwind CSS", "Blazor", "Entity Framework Core", "MySQL", "GraphQL", "RestAPI" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2023 — 2025"
+      },
+      {
+        "Title": "PSE Billing Portal",
+        "Summary": "An Enterprise billing and invoice management platform supporting internal financial operations of the Philippine Stock Exchange.",
+        "Tech": [ "HTML & CSS", "jQuery", "ASP.NET Core", "MySQL" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2023 - 2025"
+      },
+      {
+        "Title": "STG (Stock Trading Game)",
+        "Summary": "Stock market simulation platform designed to provide users with hands-on trading experience in a risk-free environment. ",
+        "Tech": [ "HTML", "VueJS", "Tailwind CSS", "Blazor", "Entity Framework Core", "MySQL", "GraphQL", "RestAPI" ],
+        "ImagePath": "",
+        "DemoUrl": "",
+        "RepoUrl": "",
+        "Period": "2023 — 2025"
+      }
+    ],
+
+    "SocialProof": [
+      {
+        "Kind": "Award",
+        "Title": "Employee of the Month",
+        "Detail": "Awarded Employee of the Month 6 times in recognition of consistent technical delivery, project leadership, and development excellence.",
+        "Date": "2023"
+      }
+    ],
+
+    "Contact": {
+      "Heading": "Get in touch",
+      "Blurb": "The fastest way to reach me is email. If you have a project, a role, or a question, the form below lands in the same inbox.",
+      "Email": "francislagmay24@gmail.com",
+      "FormHeading": "Send a message"
+    },
+
+    "Socials": [
+      { "Label": "GitHub", "Url": "https://github.com/francislagmay24", "Mark": "GH" },
+      { "Label": "LinkedIn", "Url": "https://www.linkedin.com/in/francislagmay/", "Mark": "in" }
+    ]
+  }
+}

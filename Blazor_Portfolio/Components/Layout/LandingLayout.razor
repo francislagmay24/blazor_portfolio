@@ -1,0 +1,49 @@
+@inherits LayoutComponentBase
+@using Microsoft.Extensions.Options
+@using Blazor_Portfolio.Options
+@inject IOptions<PortfolioOptions> PortfolioOptions
+
+@* Public-facing layout: sticky header + footer, no app chrome.
+   Styling for this shell lives in LandingLayout.razor.css; the page inside @Body
+   carries its own scope, so page-specific CSS goes in Portfolio.razor.css. *@
+<div class="landing">
+    <header class="landing-header">
+        <div class="landing-container landing-header-inner">
+            <a class="landing-brand" href="/#top">@PortfolioOptions.Value.Profile.Name</a>
+
+            <nav class="landing-nav" aria-label="Sections">
+                <a href="/#about">About</a>
+                <a href="/#skills">Skills</a>
+                <a href="/#projects">Projects</a>
+                <a href="/#proof">Achievements</a>
+                <a class="landing-nav-cta" href="/#contact">Contact</a>
+            </nav>
+
+            <a class="landing-signin" href="/login">Sign in</a>
+        </div>
+    </header>
+
+    <main class="landing-main">
+        @Body
+    </main>
+
+    <footer class="landing-footer">
+        <div class="landing-container landing-footer-inner">
+            <p class="landing-footer-text">
+                &copy; @DateTime.Now.Year @PortfolioOptions.Value.Profile.Name. Built with ASP.NET Core and Blazor.
+            </p>
+            <nav class="landing-footer-links" aria-label="Social links">
+                @foreach (var social in PortfolioOptions.Value.Socials)
+                {
+                    <a href="@social.Url" rel="me noopener" target="_blank">@social.Label</a>
+                }
+            </nav>
+        </div>
+    </footer>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

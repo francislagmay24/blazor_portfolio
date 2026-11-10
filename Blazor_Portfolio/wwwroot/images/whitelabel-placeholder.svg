@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  WHITE-LABEL LOGO PLACEHOLDER
+  ---------------------------
+  Replace this file with the customer's logo, or point Branding:LogoPath in
+  appsettings.json at a different image under wwwroot/.
+  Recommended: SVG or a transparent PNG at least 320px wide.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" width="320" height="120" role="img" aria-label="White-label logo placeholder">
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.55" />
+    </linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="317" height="117" rx="16"
+        fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="3" stroke-dasharray="12 9" />
+  <g fill="url(#mark)">
+    <rect x="36" y="40" width="40" height="40" rx="10" />
+    <rect x="86" y="52" width="120" height="9" rx="4.5" />
+    <rect x="86" y="69" width="86" height="9" rx="4.5" />
+  </g>
+  <text x="36" y="104" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" fill-opacity="0.8" letter-spacing="2.5">
+    YOUR LOGO HERE
+  </text>
+</svg>

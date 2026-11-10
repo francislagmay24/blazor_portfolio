@@ -1,0 +1,150 @@
+@page "/login"
+@layout Layout.AuthLayout
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Options
+@using Blazor_Portfolio.Options
+@using Blazor_Portfolio.Security
+@inject UserService UserService
+@inject IOptions<BrandingOptions> BrandingOptions
+@inject NavigationManager Navigation
+
+<PageTitle>Sign in</PageTitle>
+
+<div class="login-shell">
+
+    @* ---------- White-label brand panel ---------- *@
+    <section class="login-brand" aria-label="Product branding">
+        <div class="brand-inner">
+            @if (branding.UseImageLogo)
+            {
+                @* Swap wwwroot/images/whitelabel-placeholder.svg for the customer logo,
+                   or override Branding:LogoPath in configuration. *@
+                <img class="brand-logo" src="@branding.LogoPath" alt="@branding.ProductName logo" />
+            }
+            else
+            {
+                <span class="brand-wordmark">@branding.ProductName</span>
+            }
+
+            <h1 class="brand-name">@branding.ProductName</h1>
+            <p class="brand-tagline">@branding.Tagline</p>
+        </div>
+
+        <p class="brand-footnote">&copy; @DateTime.Now.Year @branding.ProductName</p>
+    </section>
+
+    @* ---------- Sign-in form ---------- *@
+    <section class="login-form-panel">
+        <div class="form-inner">
+            <h2 class="form-title">Sign in</h2>
+            <p class="form-subtitle">Use your work account to continue.</p>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger" role="alert">@errorMessage</div>
+            }
+
+            <EditForm Model="Input" FormName="login" OnValidSubmit="HandleLoginAsync" method="post">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email address</label>
+                    <InputText id="email" class="form-control" type="email"
+                               autocomplete="username" placeholder="you@company.com"
+                               @bind-Value="Input.Email" />
+                    <ValidationMessage For="() => Input.Email" class="validation-message" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <InputText id="password" class="form-control" type="password"
+                               autocomplete="current-password" placeholder="Your password"
+                               @bind-Value="Input.Password" />
+                    <ValidationMessage For="() => Input.Password" class="validation-message" />
+                </div>
+
+                <div class="form-check mb-4">
+                    <InputCheckbox id="rememberMe" class="form-check-input" @bind-Value="Input.RememberMe" />
+                    <label class="form-check-label" for="rememberMe">Keep me signed in</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </EditForm>
+
+            <p class="form-hint">
+                Demo account: <code>admin@example.com</code> / <code>Passw0rd!</code>
+            </p>
+        </div>
+    </section>
+</div>
+
+@code {
+    private BrandingOptions branding = new();
+    private string? errorMessage;
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromForm]
+    private LoginInput Input { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        branding = BrandingOptions.Value;
+
+        // A GET must not replay the previous post's values.
+        if (HttpContext?.Request.Method != HttpMethods.Post)
+        {
+            Input = new LoginInput();
+        }
+    }
+
+    private async Task HandleLoginAsync()
+    {
+        if (HttpContext is null)
+        {
+            errorMessage = "Sign-in needs a full page request. Reload the page and try again.";
+            return;
+        }
+
+        var (result, user) = await UserService.ValidateCredentialsAsync(Input.Email, Input.Password);
+
+        switch (result)
+        {
+            case LoginResult.Success when user is not null:
+                var principal = AuthClaims.BuildPrincipal(
+                    new AuthClaims.AppUserView(user.Id, user.Email, user.DisplayName));
+
+                await HttpContext.SignInAsync(
+                    UserService.CookieScheme,
+                    principal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = Input.RememberMe,
+                        ExpiresUtc = Input.RememberMe
+                            ? DateTimeOffset.UtcNow.AddDays(14)
+                            : DateTimeOffset.UtcNow.AddHours(8)
+                    });
+
+                await UserService.RecordLoginAsync(user.Id);
+                Navigation.NavigateTo("/dashboard", forceLoad: true);
+                return;
+
+            case LoginResult.AccountDisabled:
+                errorMessage = "This account has been disabled. Contact your administrator.";
+                break;
+
+            case LoginResult.ServiceUnavailable:
+                errorMessage = "We can't reach the account database right now. Try again in a moment.";
+                break;
+
+            default:
+                // Deliberately vague: naming which half was wrong helps account enumeration.
+                errorMessage = "That email and password combination is not valid.";
+                break;
+        }
+    }
+}
