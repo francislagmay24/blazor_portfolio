@@ -153,11 +153,6 @@
             @foreach (var project in portfolio.Projects)
             {
                 <article class="project-card @(project.Featured ? "is-featured" : null)">
-                    <a class="project-media" href="@(project.DemoUrl ?? project.RepoUrl ?? "#")">
-                        @* TODO: replace with a real screenshot of the project. *@
-                        <img src="@project.ImagePath"
-                             alt="@(project.ImageAlt ?? $"{project.Title} preview")" loading="lazy" />
-                    </a>
 
                     <div class="project-body">
                         <div class="project-head">
