@@ -7,9 +7,12 @@
     <RootNamespace>Blazor_Portfolio</RootNamespace>
     <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <UserSecretsId>blazor-portfolio-1f0a6d4c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- SMTP delivery for the portfolio contact form. -->
+    <PackageReference Include="MailKit" Version="5.0.0" />
     <PackageReference Include="MySqlConnector" Version="2.6.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
   </ItemGroup>

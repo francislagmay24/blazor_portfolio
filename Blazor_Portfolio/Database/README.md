@@ -72,9 +72,45 @@ Store emails lower-cased — the app normalises input before lookup, and the
 To revoke access without deleting history, set `IsActive = 0`; the user will be
 told the account is disabled.
 
-## 5. Reading contact form messages
+## 5. Contact form messages
 
-Every submission from the portfolio page lands in `ContactMessages`:
+Every submission from the portfolio page is **emailed to you and** written to
+`ContactMessages`. The email is the primary channel; the row is the fallback so a
+mail outage never loses a lead.
+
+### Email setup (required to receive notifications)
+
+The form sends through SMTP, configured in the `Email` section. `Host`,
+`FromAddress` and `ToAddress` are already pointed at
+`francislagmay24@gmail.com`; only the password is missing, and it must not be
+committed. For Gmail:
+
+1. Enable 2-Step Verification, then create an **App password**
+   (Google Account ▸ Security ▸ App passwords).
+2. Store it in user-secrets:
+
+   ```powershell
+   dotnet user-secrets set "Email:Password" "<16-character app password>"
+   ```
+
+3. Verify with a submission from `/#contact`. The log should show
+   `Emailed contact message from …`.
+
+Other settings in the `Email` section:
+
+| Key | Purpose |
+| --- | --- |
+| `Security` | `StartTls` (port 587) or `SslOnConnect` (port 465). `None` is for local sinks only. |
+| `FromName` | Display name on the notification. |
+| `SendAutoReply` | Set `false` to stop the "thanks, message received" mail to the visitor. |
+| `CcAddress` | Optional second inbox for a copy. |
+| `Enabled` | Set `false` to turn email off and go back to database-only. |
+
+Without a password (or with `Enabled: false`) submissions are still stored and the
+form still succeeds — the mail attempt is logged, and the visitor sees the
+"received but not emailed" notice.
+
+### Reading stored messages
 
 ```sql
 SELECT `Id`, `Name`, `Email`, `Company`, `Message`, `CreatedUtc`
@@ -89,12 +125,17 @@ Mark one as dealt with when you have replied:
 UPDATE `ContactMessages` SET `IsHandled` = 1 WHERE `Id` = 7;
 ```
 
-Two behaviours worth knowing:
+Behaviours worth knowing:
 
 - **Honeypot.** The form has a hidden `Website` field. If a bot fills it in, the
-  row is silently discarded and the bot is shown the normal success message.
-- **Store failures are surfaced.** If MySQL is unreachable, the visitor is told
-  to email you directly instead of seeing a fake success.
+  message is silently discarded — not stored, not emailed — and the bot is shown
+  the normal success message.
+- **Partial failures are surfaced.** If the email goes out but MySQL is down, the
+  visitor is told the message was received but the notification could not be
+  sent. If neither channel works, they are asked to email you directly instead of
+  seeing a fake success.
+- **Reply-to is the visitor.** Pressing reply in the notification answers them,
+  not your own inbox.
 
 ## Notes
 

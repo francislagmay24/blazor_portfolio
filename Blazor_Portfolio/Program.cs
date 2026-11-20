@@ -29,6 +29,11 @@ builder.Services.AddRazorComponents()
 builder.Services.Configure<BrandingOptions>(builder.Configuration.GetSection(BrandingOptions.SectionName));
 builder.Services.Configure<PortfolioOptions>(builder.Configuration.GetSection(PortfolioOptions.SectionName));
 
+// --- Contact form email (SMTP) -----------------------------------------------
+// Credentials belong in user-secrets: dotnet user-secrets set "Email:Password" "..."
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(EmailOptions.SectionName));
+builder.Services.AddSingleton<ContactEmailService>();
+
 // --- Database (MySQL via Pomelo) ---------------------------------------------
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException(

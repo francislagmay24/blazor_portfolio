@@ -1,13 +1,20 @@
 @page "/"
 @layout Layout.LandingLayout
 @attribute [AllowAnonymous]
+@* The contact form's "Send another message" button relies on a live circuit.
+   Without an interactive render mode this page is static SSR, so @onclick
+   handlers are never wired up and the button does nothing. Enhanced form
+   navigation stays enabled so the EditForm post keeps working. *@
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 @using Microsoft.AspNetCore.Authorization
+@using System.Net
 @using Microsoft.Extensions.Options
 @using Blazor_Portfolio.Options
 @using Blazor_Portfolio.Security
 @using Blazor_Portfolio.Services
 @inject IOptions<PortfolioOptions> PortfolioOptions
 @inject ContactService ContactService
+@inject NavigationManager Navigation
 
 <PageTitle>@portfolio.Profile.Name — @portfolio.Profile.Title</PageTitle>
 <HeadContent>
@@ -279,7 +286,15 @@
                 }
                 else
                 {
-                    @if (!string.IsNullOrEmpty(contactError))
+                    @if (contactState == ContactState.EmailFailed)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Your message was received, but the notification email could not be sent.</strong>
+                            It is saved here and I'll pick it up, but if it's urgent please email me directly at
+                            <a href="mailto:@portfolio.Contact.Email">@portfolio.Contact.Email</a>.
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(contactError))
                     {
                         <div class="alert alert-danger" role="alert">@contactError</div>
                     }
@@ -340,7 +355,15 @@
     private string? contactError;
     private ContactState contactState = ContactState.Idle;
 
-    private enum ContactState { Idle, Sending, Sent }
+    private enum ContactState { Idle, Sending, Sent, EmailFailed }
+
+    /// <summary>
+    /// Remote address captured during prerender. On an interactive circuit there
+    /// is no <see cref="HttpContext"/>, so the IP has to be persisted here or it
+    /// arrives as null and the notification says "unknown".
+    /// </summary>
+    [PersistentState]
+    public string? ClientIp { get; set; }
 
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
@@ -351,6 +374,9 @@
     protected override void OnInitialized()
     {
         portfolio = PortfolioOptions.Value;
+
+        // Only available while server-rendering; null once the circuit is live.
+        ClientIp ??= DescribeClientAddress(HttpContext?.Connection.RemoteIpAddress);
 
         // Don't replay a previous post's values on a plain GET.
         if (HttpContext?.Request.Method != HttpMethods.Post)
@@ -364,22 +390,54 @@
         contactState = ContactState.Sending;
         contactError = null;
 
-        var result = await ContactService.SaveAsync(ContactInput, HttpContext?.Connection.RemoteIpAddress?.ToString());
+        var result = await ContactService.SubmitAsync(ContactInput, ClientIp);
 
         switch (result)
         {
             // A honeypot hit is reported as success so bots get no signal.
-            case ContactResult.Saved:
+            case ContactResult.Delivered:
             case ContactResult.Discarded:
                 contactState = ContactState.Sent;
                 break;
 
+            // The lead is safe, but claiming "your message is in" would be a lie
+            // the owner never finds out about — surface it instead.
+            case ContactResult.StoredOnly:
+            case ContactResult.Emailed:
+                contactState = ContactState.EmailFailed;
+                break;
+
+            // Email was never configured, so nothing reached the owner's inbox.
+            // Say that plainly rather than showing a success the sender will act on.
+            case ContactResult.NotEmailed:
+                contactState = ContactState.Idle;
+                contactError = "Sorry — the message could not be emailed to me. " +
+                               "Please email me directly at " + portfolio.Contact.Email + ".";
+                break;
+
             default:
                 contactState = ContactState.Idle;
-                contactError = "Sorry — the message could not be saved right now. " +
+                contactError = "Sorry — the message could not be sent right now. " +
                                "Please email me directly at " + portfolio.Contact.Email + ".";
                 break;
         }
+    }
+
+    private static string? DescribeClientAddress(IPAddress? address)
+    {
+        if (address is null)
+        {
+            return null;
+        }
+
+        // Kestrel reports a loopback IPv6 connection as ::ffff:127.0.0.1; show the
+        // IPv4 form so the notification reads "127.0.0.1" instead of noise.
+        if (address.IsIPv4MappedToIPv6)
+        {
+            address = address.MapToIPv4();
+        }
+
+        return address.ToString();
     }
 
     private void ResetForm()
@@ -387,5 +445,10 @@
         ContactInput = new ContactInput();
         contactState = ContactState.Idle;
         contactError = null;
+
+        // The form was previously reached by a full-page POST to "/". Once the
+        // page is interactive that post is still in the browser's history, so a
+        // refresh would replay it — replace the URL with the plain contact anchor.
+        Navigation.NavigateTo("/#contact", forceLoad: false, replace: true);
     }
 }
