@@ -7,6 +7,8 @@ using Blazor_Portfolio.Data;
 using Blazor_Portfolio.Options;
 using Blazor_Portfolio.Security;
 using Blazor_Portfolio.Services;
+using System.Net;
+using Microsoft.AspNetCore.HttpOverrides;
 
 // Utility: print a PasswordHasher-compatible hash and exit, e.g.
 //   dotnet run -- --hash-password "MyNewPassword"
@@ -67,7 +69,19 @@ builder.Services.AddAuthentication(UserService.CookieScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto;
+
+    options.KnownProxies.Add(IPAddress.Loopback);
+    options.KnownProxies.Add(IPAddress.IPv6Loopback);
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
