@@ -15,6 +15,7 @@
 @inject IOptions<PortfolioOptions> PortfolioOptions
 @inject ContactService ContactService
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <PageTitle>@portfolio.Profile.Name — @portfolio.Profile.Title</PageTitle>
 <HeadContent>
@@ -69,6 +70,10 @@
     </div>
 </section>
 
+@* Wave dividers between sections; each fills itself from the adjacent sections'
+   colours (see .section-wave in Portfolio.razor.css). *@
+<div class="section-wave" data-from="hero" data-to="surface" aria-hidden="true"></div>
+
 @* ================= ABOUT ================= *@
 <section class="section" id="about">
     <div class="landing-container">
@@ -109,6 +114,7 @@
 </section>
 
 @* ================= SKILLS ================= *@
+<div class="section-wave" data-from="surface" data-to="surface-alt" aria-hidden="true"></div>
 <section class="section section-alt" id="skills">
     <div class="landing-container">
         <h2 class="section-title">Skills &amp; Tech Stack</h2>
@@ -149,6 +155,7 @@
 </section>
 
 @* ================= PROJECTS ================= *@
+<div class="section-wave" data-from="surface-alt" data-to="surface" aria-hidden="true"></div>
 <section class="section" id="projects">
     <div class="landing-container">
         <h2 class="section-title">Projects</h2>
@@ -217,6 +224,7 @@
 @* ================= SOCIAL PROOF ================= *@
 @if (portfolio.SocialProof.Count > 0)
 {
+    <div class="section-wave" data-from="surface" data-to="surface-alt" aria-hidden="true"></div>
     <section class="section section-alt" id="proof">
         <div class="landing-container">
             <h2 class="section-title">Achievements</h2>
@@ -251,6 +259,7 @@
 }
 
 @* ================= CONTACT ================= *@
+<div class="section-wave" data-from="surface-alt" data-to="surface" aria-hidden="true"></div>
 <section class="section" id="contact">
     <div class="landing-container">
         <h2 class="section-title">@portfolio.Contact.Heading</h2>
@@ -354,6 +363,7 @@
     private PortfolioOptions portfolio = new();
     private string? contactError;
     private ContactState contactState = ContactState.Idle;
+    private bool revealObserverAttached;
 
     private enum ContactState { Idle, Sending, Sent, EmailFailed }
 
@@ -383,6 +393,19 @@
         {
             ContactInput = new ContactInput();
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Runs once the interactive circuit owns the DOM. During prerender the
+        // markup is already correct, so nothing is hidden without JS.
+        if (!firstRender || revealObserverAttached)
+        {
+            return;
+        }
+
+        revealObserverAttached = true;
+        await JS.InvokeVoidAsync("portfolioReveal.attach");
     }
 
     private async Task HandleContactAsync()

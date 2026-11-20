@@ -14,7 +14,67 @@
         radial-gradient(circle at 15% 0%, #e8f1fb 0%, transparent 55%),
         radial-gradient(circle at 95% 25%, #eef2ff 0%, transparent 45%),
         var(--surface);
-    border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Wave dividers ----------
+   One seamless wave per section boundary. The element paints the incoming
+   section's colour and a single 3-layer masked pseudo-element carves the crest
+   (edge line, shadow, then the outgoing section's colour). A single element
+   means there is no seam to align, and the colours can be CSS variables — an
+   inline SVG data URI cannot read var() from a fill. */
+.section-wave {
+    /* Mask geometry: 1200 x 120 box where the crest sits at y=60. */
+    --wave-h: clamp(3rem, 6vw, 5.5rem);
+    --wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C200,0 400,120 600,60 C800,0 1000,120 1200,60 V120 H0 Z' fill='%23000'/%3E%3C/svg%3E");
+    --wave-mask-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,59 C200,-1 400,119 600,59 C800,-1 1000,119 1200,59 V61 H0 Z' fill='%23000'/%3E%3C/svg%3E");
+
+    position: relative;
+    height: var(--wave-h);
+    margin-bottom: calc(-1 * var(--wave-h));
+    background: var(--wave-from, var(--surface));
+}
+
+.section-wave::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--wave-to, var(--surface));
+
+    -webkit-mask-image: var(--wave-mask-line), var(--wave-mask), var(--wave-mask);
+    mask-image: var(--wave-mask-line), var(--wave-mask), var(--wave-mask);
+
+    /* Layer 1 is the thin crest outline, layer 2 the soft drop shadow that gives
+       the wave depth, layer 3 the incoming colour. All three are clipped to the
+       same silhouette so they stack without fading each other out. */
+    -webkit-mask-repeat: no-repeat, no-repeat, no-repeat;
+    mask-repeat: no-repeat, no-repeat, no-repeat;
+
+    -webkit-mask-size: 100% 100%, 100% 100%, 100% 100%;
+    mask-size: 100% 100%, 100% 100%, 100% 100%;
+
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+
+    filter: drop-shadow(0 -1px 2px rgba(15, 23, 42, 0.09));
+}
+
+/* Colour pairs matching each section transition in the markup. */
+.section-wave[data-from="hero"],
+.section-wave[data-from="surface"] {
+    --wave-from: var(--surface);
+}
+
+.section-wave[data-from="surface-alt"] {
+    --wave-from: var(--surface-alt);
+}
+
+.section-wave[data-to="surface"] {
+    --wave-to: var(--surface);
+}
+
+.section-wave[data-to="surface-alt"] {
+    --wave-to: var(--surface-alt);
 }
 
 .hero-inner {
@@ -167,12 +227,13 @@
 /* ---------- Generic section ---------- */
 .section {
     padding: clamp(3rem, 6vw, 4.5rem) 0;
+
+    /* Anchor jumps land below the sticky header rather than under it. */
+    scroll-margin-top: 4.5rem;
 }
 
 .section-alt {
     background: var(--surface-alt);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
 }
 
 .section-title {
@@ -689,5 +750,44 @@
 @media (max-width: 720px) {
     .contact-row {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Scroll-in reveal ----------
+   Sections ease up and settle as they scroll into view, driven by
+   IntersectionObserver in Portfolio.razor. Supporting browsers only: the
+   .js-reveal class is added by script, and @supports gates the transform, so a
+   no-JS or older engine simply shows the fully-rendered page. */
+.js-reveal .section-wave,
+.js-reveal .section {
+    opacity: 0;
+    transform: translate3d(0, 1.75rem, 0);
+    transition:
+        opacity 0.6s ease-out,
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.js-reveal .is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Stagger the wave against its section so the crest leads and the content
+   follows, which reads as one continuous motion down the page. */
+.js-reveal .section-wave.is-revealed {
+    transition-delay: 0s;
+}
+
+.js-reveal .section.is-revealed {
+    transition-delay: 0.08s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js-reveal .section-wave,
+    .js-reveal .section,
+    .js-reveal .is-revealed {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }
